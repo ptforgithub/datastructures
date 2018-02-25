@@ -28,37 +28,6 @@ public:
 		pRoot = NULL;
 	}
 
-	Node &Insert(Node &node) {
-		if (pRoot == NULL) {
-			pRoot = &node;
-			return *pRoot;
-		}
-
-		Node *pCurrent = pRoot;
-
-		while (pCurrent) {
-			if (pCurrent->_key == node._key) {
-				break; // Do not insert duplicates
-			}
-			if (pCurrent->_key > node._key) {
-				if (!pCurrent->pLeft) {
-					pCurrent->pLeft = &node;
-					break;
-				}
-				pCurrent = pCurrent->pLeft;
-			}
-			else {
-				if (!pCurrent->pRight) {
-					pCurrent->pRight = &node;
-					break;
-				}
-				pCurrent = pCurrent->pRight;
-			}
-		}
-
-		return (*pRoot);
-	}
-
 	Node &Insert(int key) {
 		Node *pNode = new Node(key);
 		Insert(*pNode);
@@ -98,8 +67,57 @@ public:
 		cout << pRoot->_key << ",";
 	}
 
+	Node *Search(int key) {
+		return SearchInternal(key, pRoot);
+	}
+
 private:
 	Node *pRoot;
+
+	Node &Insert(Node &node) {
+		if (pRoot == NULL) {
+			pRoot = &node;
+			return *pRoot;
+		}
+
+		Node *pCurrent = pRoot;
+
+		while (pCurrent) {
+			if (pCurrent->_key == node._key) {
+				break; // Do not insert duplicates
+			}
+			if (pCurrent->_key > node._key) {
+				if (!pCurrent->pLeft) {
+					pCurrent->pLeft = &node;
+					break;
+				}
+				pCurrent = pCurrent->pLeft;
+			}
+			else {
+				if (!pCurrent->pRight) {
+					pCurrent->pRight = &node;
+					break;
+				}
+				pCurrent = pCurrent->pRight;
+			}
+		}
+
+		return (*pRoot);
+	}
+
+	Node *SearchInternal(int key, Node *pCurrNode) {
+		if (pCurrNode == NULL)
+			return NULL;
+		if (key == pCurrNode->_key) {
+			return pCurrNode;
+		}
+		if (pCurrNode->_key > key) {
+			return SearchInternal(key, pCurrNode->pLeft);
+		}
+		else {
+			return SearchInternal(key, pCurrNode->pRight);
+		}
+	}
 };
 
 int main()
@@ -122,6 +140,24 @@ int main()
 	bst.PrintPreOrder(&pRoot);
 	cout << "\n";
 	bst.PrintPostOrder(&pRoot);
+
+	Node *pNode = bst.Search(5);
+	cout << ((pNode) ? pNode->_key : -1) << "\n";
+
+	pNode = bst.Search(56);
+	cout << ((pNode) ? pNode->_key : -1) << "\n";
+
+	pNode = bst.Search(34);
+	cout << ((pNode) ? pNode->_key : -1) << "\n";
+
+	pNode = bst.Search(24);
+	cout << ((pNode) ? pNode->_key : -1) << "\n";
+
+	pNode = bst.Search(63);
+	cout << ((pNode) ? pNode->_key : -1) << "\n";
+
+	pNode = bst.Search(51);
+	cout << ((pNode) ? pNode->_key : -1) << "\n";
 
 	return 0;
 }
