@@ -105,6 +105,11 @@ public:
 		return NULL;
 	}
 
+	Node *FindKthSmallestElement(int k) {
+		elementIndex = -1;
+		return FindKthSmallestInternal(k, pRoot);
+	}
+
 private:
 	Node *pRoot;
 
@@ -152,6 +157,35 @@ private:
 			return SearchInternal(key, pCurrNode->pRight);
 		}
 	}
+
+	Node *FindKthSmallestInternal(int k, Node *pCurr) {
+		if (!pCurr) {
+			return NULL;
+		}
+
+		if (pCurr->pLeft) {
+			Node *p = FindKthSmallestInternal(k, pCurr->pLeft);
+			if (elementIndex == k) {
+				return p;
+			}
+		}
+		// Do something with pCurr
+		elementIndex++;
+		if (elementIndex == k) {
+			return pCurr;
+		}
+
+		if (pCurr->pRight) {
+			Node *p = FindKthSmallestInternal(k, pCurr->pRight);
+			if (elementIndex == k) {
+				return p;
+			}
+		}
+
+		return NULL;
+	}
+
+	int elementIndex;
 };
 
 int main()
@@ -210,6 +244,15 @@ int main()
 	pNode = bst.FindLCA(9, 45);
 	pNode = bst.FindLCA(9, 34);
 
+	// Find Kth Smallest Element
+	pNode = bst.FindKthSmallestElement(0); // Smallest of all
+	pNode = bst.FindKthSmallestElement(1); // Smallest of all
+	pNode = bst.FindKthSmallestElement(2); // Smallest of all
+	pNode = bst.FindKthSmallestElement(3); // Smallest of all
+	pNode = bst.FindKthSmallestElement(4); // Smallest of all
+	pNode = bst.FindKthSmallestElement(5); // Smallest of all
+	pNode = bst.FindKthSmallestElement(8); // Smallest of all
+	pNode = bst.FindKthSmallestElement(10); // Smallest of all
 
 	return 0;
 }
