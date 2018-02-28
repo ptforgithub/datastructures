@@ -246,13 +246,13 @@ int main()
 
 	// Find Kth Smallest Element
 	pNode = bst.FindKthSmallestElement(0); // Smallest of all
-	pNode = bst.FindKthSmallestElement(1); // Smallest of all
-	pNode = bst.FindKthSmallestElement(2); // Smallest of all
-	pNode = bst.FindKthSmallestElement(3); // Smallest of all
-	pNode = bst.FindKthSmallestElement(4); // Smallest of all
-	pNode = bst.FindKthSmallestElement(5); // Smallest of all
-	pNode = bst.FindKthSmallestElement(8); // Smallest of all
-	pNode = bst.FindKthSmallestElement(10); // Smallest of all
+	pNode = bst.FindKthSmallestElement(1);
+	pNode = bst.FindKthSmallestElement(2);
+	pNode = bst.FindKthSmallestElement(3);
+	pNode = bst.FindKthSmallestElement(4);
+	pNode = bst.FindKthSmallestElement(5);
+	pNode = bst.FindKthSmallestElement(8);
+	pNode = bst.FindKthSmallestElement(10); // Out of range - should return NULL
 
 	return 0;
 }
