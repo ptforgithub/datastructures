@@ -110,6 +110,50 @@ public:
 		return FindKthSmallestInternal(k, pRoot);
 	}
 
+	// Not straight forward
+	Node *FindInOrderSuccessor(int k) {
+		return FindInOrderSuccessorInternal(k, pRoot);
+	}
+
+	Node *FindInOrderSuccessorInternal(int k, Node *pCurr) {
+		if (!pCurr)
+			return NULL;
+		
+		if (k < pCurr->_key) {
+			// K is on the left subtree
+			if (!pCurr->pLeft)
+				return pCurr; // Or we could return NULL based on our definition
+			if (k > pCurr->pLeft->_key) {
+				return pCurr; // Again, depending on our def
+			}
+			if (k < pCurr->pLeft->_key) {
+				Node *p = FindInOrderSuccessorInternal(k, pCurr->pLeft);
+				return p;
+			}
+			if (k == pCurr->pLeft->_key) {
+				// K is the left child of pCurr
+				Node *p = pCurr->pLeft->pRight;
+				if (!p)
+					return pCurr; // Left child of pCurr has no right child
+				p = FindMin(pCurr->pLeft->pRight);
+				return p;
+			}
+		}
+		else if (k == pCurr->_key) {
+			// K is pCurr
+			Node *p = FindMin(pCurr->pRight);
+			return p;
+		}
+		else if (k > pCurr->_key) {
+			// K is on the right of pCurr
+			Node *p = FindInOrderSuccessorInternal(k, pCurr->pRight);
+			return p;
+		}
+		// This should not reach ..
+		return NULL;
+	}
+
+	// This is tricky !!
 	Node *Delete(int k) {
 		// https://www.youtube.com/watch?v=gcULXE7ViZw
 		// https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
@@ -196,6 +240,7 @@ private:
 	}
 	int elementIndex;
 
+	// This is tricky !!
 	Node *DeleteInternalAndReturnNewRoot(int k, Node *pCurr) {
 		// Delete the node with key == k
 		// And return the new root of the tree
@@ -381,6 +426,24 @@ int main()
 	Delete(9);
 	Delete(3);
 	Delete(11);
+
+	//                    5
+	//                3       25
+	//                    24      55
+	//                 9       34    63
+	//                           45
+
+	// Inorder Successor
+	pNode = bst.FindInOrderSuccessor(5);
+	pNode = bst.FindInOrderSuccessor(3);
+	pNode = bst.FindInOrderSuccessor(25);
+	pNode = bst.FindInOrderSuccessor(24);
+	pNode = bst.FindInOrderSuccessor(55);
+	pNode = bst.FindInOrderSuccessor(9);
+	pNode = bst.FindInOrderSuccessor(34);
+	pNode = bst.FindInOrderSuccessor(63);
+	pNode = bst.FindInOrderSuccessor(45);
+	pNode = bst.FindInOrderSuccessor(11);
 	return 0;
 }
 
