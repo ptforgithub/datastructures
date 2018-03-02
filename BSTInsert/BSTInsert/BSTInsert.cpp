@@ -112,10 +112,36 @@ public:
 
 	// Not straight forward
 	Node *FindInOrderSuccessor(int k) {
-		return FindInOrderSuccessorInternal(k, pRoot);
+		Node *pPred = NULL;
+		Node *pSucc = NULL;
+		FindInOrderSuccessorInternal(k, pRoot, &pPred, &pSucc);
+		return pSucc;
 	}
 
-	Node *FindInOrderSuccessorInternal(int k, Node *pCurr) {
+	void FindInOrderSuccessorInternal(int k, Node *pCurr, Node **pPred, Node **pSucc) {
+		if (!pCurr) {
+			*pPred = *pSucc = NULL;
+			return;
+		}
+		if (k == pCurr->_key) {
+			if (pCurr->pLeft) {
+				*pPred = FindMax(pCurr->pLeft);
+			}
+			if (pCurr->pRight) {
+				*pSucc = FindMin(pCurr->pRight);
+			}
+			return;
+		}
+		if (k < pCurr->_key) {
+			*pSucc = pCurr;
+			FindInOrderSuccessorInternal(k, pCurr->pLeft, pPred, pSucc);
+			return;
+		}
+		*pPred = pCurr;
+		FindInOrderSuccessorInternal(k, pCurr->pRight, pPred, pSucc);
+	}
+
+	Node *FindInOrderSuccessorInternal_old(int k, Node *pCurr) {
 		if (!pCurr)
 			return NULL;
 		
@@ -127,7 +153,7 @@ public:
 				return pCurr; // Again, depending on our def
 			}
 			if (k < pCurr->pLeft->_key) {
-				Node *p = FindInOrderSuccessorInternal(k, pCurr->pLeft);
+				Node *p = FindInOrderSuccessorInternal_old(k, pCurr->pLeft);
 				return p;
 			}
 			if (k == pCurr->pLeft->_key) {
@@ -146,7 +172,7 @@ public:
 		}
 		else if (k > pCurr->_key) {
 			// K is on the right of pCurr
-			Node *p = FindInOrderSuccessorInternal(k, pCurr->pRight);
+			Node *p = FindInOrderSuccessorInternal_old(k, pCurr->pRight);
 			return p;
 		}
 		// This should not reach ..
