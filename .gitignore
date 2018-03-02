@@ -2,6 +2,9 @@
 /**/bin/**/*
 *.suo
 /**/Debug/**/*
+/**/*.VC.VC.opendb
+/**/*.VC.db
+
 
 # Prerequisites
 *.d
