@@ -187,6 +187,11 @@ public:
 		return pRoot;
 	}
 
+	bool IsBST() {
+		min = FindMin(pRoot)->_key;
+		return IsBSTInternal(pRoot);
+	}
+
 	~BST() {
 		pRoot = Free(pRoot);
 	}
@@ -317,6 +322,26 @@ private:
 		}
 
 	}
+
+	bool IsBSTInternal(Node *p) {
+		if (!p) {
+			return false;
+		}
+		if (p->pLeft) {
+			if (!IsBSTInternal(p->pLeft)) {
+				return false;
+			}
+		}
+		if (p->_key < min) {
+			return false;
+		}
+		min = p->_key;
+		if (p->pRight) {
+			return IsBSTInternal(p->pRight);
+		}
+		return true;
+	}
+	int min;
 
 	Node *FindMin(Node *p) {
 		if (!p) return NULL;
@@ -470,6 +495,8 @@ int main()
 	pNode = bst.FindInOrderSuccessor(63);
 	pNode = bst.FindInOrderSuccessor(45);
 	pNode = bst.FindInOrderSuccessor(11);
+
+	bool isBST = bst.IsBST();
 	return 0;
 }
 
